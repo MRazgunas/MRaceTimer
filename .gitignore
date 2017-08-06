@@ -1,0 +1,8 @@
+build/*
+.dep/*
+.settings/*
+
+#Eclipse project files
+.cproject
+.project
+.settings
