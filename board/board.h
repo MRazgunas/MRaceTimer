@@ -44,6 +44,8 @@
 #define GPIOC_LED0              0
 #define GPIOC_LED1              1
 
+#define GPIOB_SPI2_MOSI        15
+#define GPIOB_SPI2_SCK         13
 #define GPIOB_SD_CS            12
 
 /*
@@ -73,8 +75,9 @@
 /*
  * Port A setup.
  * Everything input with pull-up except:
+ * PA0  - Analog input                          (RSSI0)
  */
-#define VAL_GPIOACRL            0x88888888      /*  PA7...PA0 */
+#define VAL_GPIOACRL            0x88888880      /*  PA7...PA0 */
 #define VAL_GPIOACRH            0x88888888      /* PA15...PA8 */
 #define VAL_GPIOAODR            0xFFFFFFFF
 
@@ -84,9 +87,11 @@
  * PB6  - Alternate Open Drain output           (UART1_TX).
  * PB7  - Digital input with pull up            (UART1_RX).
  * PB12 - Push Pull output                      (SD_CS).
+ * PB13 - Push Pull output                      (SPI2_SCK).
+ * PB15 - Push Pull output                      (SPI2_MOSI).
  */
 #define VAL_GPIOBCRL            0x4B888888      /*  PB7...PB0 */
-#define VAL_GPIOBCRH            0x88838888      /* PB15...PB8 */
+#define VAL_GPIOBCRH            0x38338888      /* PB15...PB8 */
 #define VAL_GPIOBODR            0xFFFFFFFF
 
 /*
