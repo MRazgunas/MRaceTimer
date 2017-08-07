@@ -30,7 +30,7 @@ endif
 
 # Enable this if you want link time optimizations (LTO)
 ifeq ($(USE_LTO),)
-  USE_LTO = yes
+  USE_LTO = no
 endif
 
 # If enabled, this option allows to compile the application in THUMB mode.
@@ -87,6 +87,7 @@ PROJECT = MRaceTimer
 
 # Imported source files and paths
 CHIBIOS = modules/ChibiOS
+GFXLIB = modules/ugfx
 # Startup files.
 include $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32f1xx.mk
 # HAL-OSAL files (optional).
@@ -100,6 +101,10 @@ include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 # Other files (optional).
 include $(CHIBIOS)/test/rt/test.mk
 include $(CHIBIOS)/os/various/shell/shell.mk
+include $(GFXLIB)/gfx.mk
+include $(GFXLIB)/drivers/gdisp/ILI9341/driver.mk
+include $(GFXLIB)/drivers/ginput/touch/ADS7843/driver.mk
+
 
 # Define linker script file here
 LDSCRIPT= board/STM32F103xC.ld
@@ -115,9 +120,11 @@ CSRC = $(STARTUPSRC) \
        $(BOARDSRC) \
        $(TESTSRC) \
        $(CHIBIOS)/os/hal/lib/streams/chprintf.c \
-       $(SHELLSRC)
+       $(SHELLSRC) \
+       $(GFXSRC)
        
 CSRC += $(wildcard src/*.c)
+CSRC += $(wildcard src/*/*.c)
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -150,8 +157,8 @@ ASMXSRC = $(STARTUPASM) $(PORTASM) $(OSALASM)
 INCDIR = $(CHIBIOS)/os/license \
          $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) \
          $(HALINC) $(PLATFORMINC) $(BOARDINC) $(TESTINC) \
-         $(CHIBIOS)/os/various  $(CHIBIOS)/os/hal/lib/streams src \
-         $(SHELLINC)
+         $(CHIBIOS)/os/various  $(CHIBIOS)/os/hal/lib/streams \
+         $(SHELLINC) $(GFXINC) src src/UI
 
 #
 # Project, sources and paths

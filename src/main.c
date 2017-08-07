@@ -5,6 +5,9 @@
 
 #include "rtc6715.h"
 
+#include "gfx.h"
+#include "gui.h"
+
 /*
  * Blinker thread.
  */
@@ -75,7 +78,13 @@ int main(void) {
 
     chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO+1, Thread1, NULL);
 
-    setFrequency(5945);
+    //setFrequency(5945);
+
+    gfxInit();
+    guiCreate();
+    //guiEventLoop();
+
+    guiEventLoop();
 
     while (true) {
         if(SD1.state == SD_READY && shelltp == NULL ) {

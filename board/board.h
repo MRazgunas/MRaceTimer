@@ -41,13 +41,17 @@
 /*
  * IO pins assignments.
  */
+#define GPIOB_LCD_RESET         0
+#define GPIOB_LCD_DC            1
+#define GPIOB_TOUCH_CS         11
+#define GPIOB_SD_CS            12
+#define GPIOB_SPI2_SCK         13
+#define GPIOB_SPI2_MOSI        15
+
 #define GPIOC_LED0              0
 #define GPIOC_LED1              1
-
-#define GPIOB_SPI2_MOSI        15
-#define GPIOB_SPI2_SCK         13
-#define GPIOB_SD_CS            12
-
+#define GPIOC_LCD_CS            5
+#define GPIOC_TOUCH_IRQ         6
 /*
  * I/O ports initial setup, this configuration is established soon after reset
  * in the initialization code.
@@ -75,34 +79,44 @@
 /*
  * Port A setup.
  * Everything input with pull-up except:
- * PA0  - Analog input                          (RSSI0)
+ * PA0  - Analog input                          (RSSI0).
+ * PA5  - Alternate Push Pull output            (SPI1_SCK).
+ * PA6  - Digital input with PullUp             (SPI1_MISO).
+ * PA7  - Alternate Push Pull output            (SPI1_MOSI).
  */
-#define VAL_GPIOACRL            0x88888880      /*  PA7...PA0 */
+#define VAL_GPIOACRL            0xB8B88880      /*  PA7...PA0 */
 #define VAL_GPIOACRH            0x88888888      /* PA15...PA8 */
 #define VAL_GPIOAODR            0xFFFFFFFF
 
 /*
  * Port B setup.
  * Everything input with pull-up except:
+ * PB0  - Push Pull output 50MHz.               (LCD_RESET).
+ * PB1  - Push Pull output 50MHz.               (LCD_DC).
  * PB6  - Alternate Open Drain output           (UART1_TX).
  * PB7  - Digital input with pull up            (UART1_RX).
+ * PB11 - Push Pull output 50MHz.               (TOUCH_CS).
  * PB12 - Push Pull output                      (SD_CS).
  * PB13 - Push Pull output                      (SPI2_SCK).
+ * PB14 - Digital input with PullUp             (SPI2_MISO).
  * PB15 - Push Pull output                      (SPI2_MOSI).
  */
-#define VAL_GPIOBCRL            0x4B888888      /*  PB7...PB0 */
-#define VAL_GPIOBCRH            0x38338888      /* PB15...PB8 */
+#define VAL_GPIOBCRL            0x4B888833      /*  PB7...PB0 */
+#define VAL_GPIOBCRH            0xB8B3B888      /* PB15...PB8 */
+//#define VAL_GPIOBCRH            0x38338888      /* PB15...PB8 */
 #define VAL_GPIOBODR            0xFFFFFFFF
 
 /*
  * Port C setup.
  * Everything input with pull-up except:
- * PC0  - Push Pull output           (LED_0).
- * PC1  - Push Pull output           (LED_1).
- * PC14 - Digital input               (OSC32).
- * PC15 - Digital input               (OSC32).
+ * PC0  - Push Pull output                      (LED_0).
+ * PC1  - Push Pull output                      (LED_1).
+ * PC5  - Push Pull output 50MHz.               (LCD_CS).
+ * PC6  - Digital input                         (TOUCH_IRQ).
+ * PC14 - Digital input                         (OSC32).
+ * PC15 - Digital input                         (OSC32).
  */
-#define VAL_GPIOCCRL            0x88888822      /*  PC7...PC0 */
+#define VAL_GPIOCCRL            0x88588822      /*  PC7...PC0 */
 #define VAL_GPIOCCRH            0x88888888      /* PC15...PC8 */
 #define VAL_GPIOCODR            0xFFFFFFFF
 

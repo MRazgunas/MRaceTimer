@@ -6,8 +6,8 @@
 uint32_t calculateRegBData(int freq);
 void spiWrite0(void);
 void spiWrite1(void);
-void spiSelect(uint8_t rxNumber);
-void spiUnselect(uint8_t rxNumber);
+void spiSelectMod(uint8_t rxNumber);
+void spiUnselectMod(uint8_t rxNumber);
 
 
 void initRTC6715() {
@@ -19,7 +19,7 @@ void setFrequency(int freq) {
     uint32_t regB;
     regB = calculateRegBData(freq);
 
-    spiSelect(0);
+    spiSelectMod(0);
 
     //Address (0x1)
     spiWrite1();
@@ -40,7 +40,7 @@ void setFrequency(int freq) {
     spiWrite0();
     spiWrite0();
 
-    spiUnselect(0);
+    spiUnselectMod(0);
 
 /*    spiAcquireBus(&SPID2);
     spiSelect(&SPID2);
@@ -75,14 +75,14 @@ void spiWrite1() {
     palClearPad(GPIOB, GPIOB_SPI2_SCK);
 }
 
-void spiSelect(uint8_t rxNumber) {
+void spiSelectMod(uint8_t rxNumber) {
     switch(rxNumber) {
     case 0:
         palClearPad(GPIOB, GPIOB_SD_CS);
     }
 }
 
-void spiUnselect(uint8_t rxNumber) {
+void spiUnselectMod(uint8_t rxNumber) {
     switch(rxNumber) {
     case 0:
         palSetPad(GPIOB, GPIOB_SD_CS);
