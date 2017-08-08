@@ -7,8 +7,7 @@
 #ifndef _GFXCONF_H
 #define _GFXCONF_H
 
-#define GFX_USE_OS_CHIBIOS                           TRUE
-
+#define GFX_USE_OS_CHIBIOS TRUE
 /********************************************************/
 /* GDISP stuff                                          */
 /********************************************************/
@@ -23,7 +22,7 @@
 #define GDISP_NEED_STARTUP_LOGO FALSE
 #define GDISP_NEED_CIRCLE TRUE
 #define GDISP_NEED_MULTITHREAD TRUE
-#define GDISP_DEFAULT_ORIENTATION GDISP_ROTATE_0
+#define GDISP_DEFAULT_ORIENTATION GDISP_ROTATE_LANDSCAPE
 #define GDISP_STARTUP_COLOR HTML2COLOR(0xFFFFFF)
 
 
@@ -46,7 +45,16 @@
     #define GWIN_REDRAW_IMMEDIATE TRUE
     #define GWIN_REDRAW_SINGLEOP TRUE
 
+#define GWIN_NEED_CONSOLE TRUE
+    #define GWIN_CONSOLE_USE_HISTORY FALSE
+        #define GWIN_CONSOLE_HISTORY_AVERAGING FALSE
+        #define GWIN_CONSOLE_HISTORY_ATCREATE FALSE
+    #define GWIN_CONSOLE_ESCSEQ FALSE
+    #define GWIN_CONSOLE_USE_BASESTREAM FALSE
+    #define GWIN_CONSOLE_USE_FLOAT FALSE
+
 #define GWIN_NEED_WIDGET TRUE
+    #define GWIN_NEED_LABEL TRUE
     #define GWIN_NEED_BUTTON TRUE
         #define GWIN_BUTTON_LAZY_RELEASE FALSE
     #define GWIN_FLAT_STYLING FALSE
@@ -101,6 +109,7 @@
 
 #define GFILE_NEED_NATIVEFS FALSE
 #define GFILE_NEED_ROMFS TRUE
+#define GFILE_MAX_GFILES 1
 
 
 

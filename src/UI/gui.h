@@ -9,12 +9,22 @@
 
 #include "gfx.h"
 
+// Widget groups
+#define GROUP_DEFAULT 0
+
 // GListeners
 extern GListener glistener;
 
 // GHandles
 extern GHandle ghContainerPage0;
-extern GHandle toggleLed;
+extern GHandle ghSetFreqPage;
+extern GHandle ghStartCalibration;
+extern GHandle ghStartRace;
+extern GHandle ghLabel1;
+extern GHandle ghLabel2;
+extern GHandle ghLabel3;
+extern GHandle ghLabel4;
+extern GHandle ghConsole1;
 
 // Function Prototypes
 void guiCreate(void);

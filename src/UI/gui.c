@@ -4,9 +4,6 @@
 /* http://ugfx.org                                                            */
 /******************************************************************************/
 
-#include "ch.h"
-#include "hal.h"
-
 #include "colors.h"
 #include "widgetstyles.h"
 #include "gui.h"
@@ -16,10 +13,18 @@ GListener glistener;
 
 // GHandles
 GHandle ghContainerPage0;
-GHandle toggleLed;
+GHandle ghSetFreqPage;
+GHandle ghStartCalibration;
+GHandle ghStartRace;
+GHandle ghLabel1;
+GHandle ghLabel2;
+GHandle ghLabel3;
+GHandle ghLabel4;
+GHandle ghConsole1;
 
 // Fonts
 font_t dejavu_sans_16;
+font_t dejavu_sans_32;
 
 static void createPagePage0(void)
 {
@@ -40,18 +45,115 @@ static void createPagePage0(void)
 	wi.customStyle = 0;
 	ghContainerPage0 = gwinContainerCreate(0, &wi, 0);
 
-	// create button widget: toggleLed
+	// create button widget: ghSetFreqPage
 	wi.g.show = TRUE;
-	wi.g.x = 110;
-	wi.g.y = 180;
+	wi.g.x = 190;
+	wi.g.y = 10;
 	wi.g.width = 120;
-	wi.g.height = 20;
+	wi.g.height = 30;
 	wi.g.parent = ghContainerPage0;
-	wi.text = "tglLED";
+	wi.text = "Change Freq";
 	wi.customDraw = gwinButtonDraw_Normal;
 	wi.customParam = 0;
 	wi.customStyle = 0;
-	toggleLed = gwinButtonCreate(0, &wi);
+	ghSetFreqPage = gwinButtonCreate(0, &wi);
+
+	// create button widget: ghStartCalibration
+	wi.g.show = TRUE;
+	wi.g.x = 190;
+	wi.g.y = 50;
+	wi.g.width = 120;
+	wi.g.height = 30;
+	wi.g.parent = ghContainerPage0;
+	wi.text = "Start Calib";
+	wi.customDraw = gwinButtonDraw_Normal;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghStartCalibration = gwinButtonCreate(0, &wi);
+
+	// create button widget: ghStartRace
+	wi.g.show = TRUE;
+	wi.g.x = 190;
+	wi.g.y = 90;
+	wi.g.width = 120;
+	wi.g.height = 30;
+	wi.g.parent = ghContainerPage0;
+	wi.text = "Start Race";
+	wi.customDraw = gwinButtonDraw_Normal;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghStartRace = gwinButtonCreate(0, &wi);
+
+	// Create label widget: ghLabel1
+	wi.g.show = TRUE;
+	wi.g.x = 120;
+	wi.g.y = 190;
+	wi.g.width = 200;
+	wi.g.height = 40;
+	wi.g.parent = ghContainerPage0;
+	wi.text = "00:00:00";
+	wi.customDraw = gwinLabelDrawJustifiedLeft;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghLabel1 = gwinLabelCreate(0, &wi);
+	gwinLabelSetBorder(ghLabel1, FALSE);
+	gwinSetFont(ghLabel1, dejavu_sans_32);
+	gwinRedraw(ghLabel1);
+
+	// Create label widget: ghLabel2
+	wi.g.show = TRUE;
+	wi.g.x = 120;
+	wi.g.y = 170;
+	wi.g.width = 120;
+	wi.g.height = 20;
+	wi.g.parent = ghContainerPage0;
+	wi.text = "Best lap time";
+	wi.customDraw = gwinLabelDrawJustifiedLeft;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghLabel2 = gwinLabelCreate(0, &wi);
+	gwinLabelSetBorder(ghLabel2, FALSE);
+
+	// Create label widget: ghLabel3
+	wi.g.show = TRUE;
+	wi.g.x = 10;
+	wi.g.y = 190;
+	wi.g.width = 100;
+	wi.g.height = 40;
+	wi.g.parent = ghContainerPage0;
+	wi.text = "00:00";
+	wi.customDraw = gwinLabelDrawJustifiedLeft;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghLabel3 = gwinLabelCreate(0, &wi);
+	gwinLabelSetBorder(ghLabel3, FALSE);
+	gwinSetFont(ghLabel3, dejavu_sans_32);
+	gwinRedraw(ghLabel3);
+
+	// Create label widget: ghLabel4
+	wi.g.show = TRUE;
+	wi.g.x = 10;
+	wi.g.y = 170;
+	wi.g.width = 80;
+	wi.g.height = 20;
+	wi.g.parent = ghContainerPage0;
+	wi.text = "Timer";
+	wi.customDraw = gwinLabelDrawJustifiedLeft;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghLabel4 = gwinLabelCreate(0, &wi);
+	gwinLabelSetBorder(ghLabel4, FALSE);
+
+	// Create console widget: ghConsole1
+	wi.g.show = TRUE;
+	wi.g.x = 10;
+	wi.g.y = 10;
+	wi.g.width = 170;
+	wi.g.height = 150;
+	wi.g.parent = ghContainerPage0;
+	ghConsole1 = gwinConsoleCreate(0, &wi.g);
+	gwinSetColor(ghConsole1, black_studio);
+	gwinSetBgColor(ghConsole1, silver_studio);
 }
 
 void guiShowPage(unsigned pageIndex)
@@ -76,6 +178,7 @@ void guiCreate(void)
 
 	// Prepare fonts
 	dejavu_sans_16 = gdispOpenFont("DejaVuSans16");
+	dejavu_sans_32 = gdispOpenFont("DejaVuSans32");
 
 	// Prepare images
 
@@ -92,6 +195,8 @@ void guiCreate(void)
 	// Select the default display page
 	guiShowPage(0);
 
+	// Console sample text
+	gwinPrintf(ghConsole1, "Welcome to MRaceTimer");
 }
 
 void guiEventLoop(void)
@@ -102,12 +207,8 @@ void guiEventLoop(void)
 		// Get an event
 		pe = geventEventWait(&glistener, 0);
 		switch (pe->type) {
-		case GEVENT_GWIN_BUTTON:
-		    if (((GEventGWinButton*)pe)->gwin == toggleLed) {
-		        palTogglePad(GPIOC, GPIOC_LED1);
-		    }
 		}
-		chThdSleepMilliseconds(1);
+
 	}
 }
 

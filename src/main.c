@@ -64,6 +64,9 @@ float measure_rssi(void) {
  * Application entry point.
  */
 int main(void) {
+    GHandle     gh;
+    uint16_t    i;
+
     thread_t *shelltp = NULL;
 
     halInit();
@@ -81,10 +84,11 @@ int main(void) {
     //setFrequency(5945);
 
     gfxInit();
+    gdispSetOrientation(GDISP_ROTATE_270);
     guiCreate();
-    //guiEventLoop();
 
-    guiEventLoop();
+    //guiEventLoop();
+    uint8_t cnt = 0;
 
     while (true) {
         if(SD1.state == SD_READY && shelltp == NULL ) {
@@ -97,6 +101,10 @@ int main(void) {
         uint32_t voltage = rssi * 1000;
         if(rssi_en == true) {
             chprintf((BaseSequentialStream*)&SD1, "%u\n", voltage);
+        }
+        if(++cnt == 10) {
+            cnt = 0;
+            gwinPrintf(ghConsole1, "RSSI: %u\n", voltage);
         }
         chThdSleepMilliseconds(50);
     }
