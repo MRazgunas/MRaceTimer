@@ -285,7 +285,7 @@
                     "Display Width": 320,
                     "Initial Backlight": 100,
                     "Initial Contrast": 100,
-                    "Orientation": "Landscape",
+                    "Orientation": "Native",
                     "StartUp Color": "White",
                     "Text Anti-Aliased": false,
                     "Text Kerning": false,
@@ -296,14 +296,14 @@
             {
                 "GINPUT": {
                     "Calibration Data": {
-                        "ax": 1,
-                        "ay": 1,
-                        "bx": 1,
-                        "by": 1,
-                        "cx": 0,
-                        "cy": 0
+                        "ax": -0.067400000000000002,
+                        "ay": -0.0089999999999999993,
+                        "bx": -0.0012700000000000001,
+                        "by": 0.094710000000000003,
+                        "cx": 262.55984000000001,
+                        "cy": -24.19042
                     },
-                    "Calibration Option": 0,
+                    "Calibration Option": 1,
                     "Keyboard Flags": 0,
                     "Use Keyboard": false
                 }
@@ -489,7 +489,7 @@
                                     "BgColor": "White",
                                     "Color": "Black",
                                     "Font": "DejaVu Sans 32",
-                                    "GHandle": "ghLabel1",
+                                    "GHandle": "ghBestLap",
                                     "Item": {
                                         "Height": 40,
                                         "Lock Position": false,
@@ -565,7 +565,7 @@
                                     "BgColor": "White",
                                     "Color": "Black",
                                     "Font": "DejaVu Sans 32",
-                                    "GHandle": "ghLabel3",
+                                    "GHandle": "ghTimerLabel",
                                     "Item": {
                                         "Height": 40,
                                         "Lock Position": false,
@@ -627,7 +627,7 @@
                                 "BgColor": "Silver",
                                 "Color": "Black",
                                 "Font": "0",
-                                "GHandle": "ghConsole1",
+                                "GHandle": "ghConsole",
                                 "Item": {
                                     "Height": 150,
                                     "Lock Position": false,
@@ -641,6 +641,41 @@
                                 },
                                 "Parent": "0",
                                 "Visible": true
+                            }
+                        }
+                    },
+                    {
+                        "PushButton": {
+                            "Widget": {
+                                "CustomDraw": "gwinButtonDraw_Normal",
+                                "CustomParam": "0",
+                                "Enabled": true,
+                                "Image": {
+                                    "Desktop Path": "Invalid",
+                                    "Need Manual Init": true
+                                },
+                                "Image Height Count": 1,
+                                "Style": "Default",
+                                "Text": "Results",
+                                "Window": {
+                                    "BgColor": "White",
+                                    "Color": "Black",
+                                    "Font": "0",
+                                    "GHandle": "ghResults",
+                                    "Item": {
+                                        "Height": 30,
+                                        "Lock Position": false,
+                                        "Lock Size": false,
+                                        "Snap": true,
+                                        "Width": 120,
+                                        "X": 190,
+                                        "Y": 130,
+                                        "Z": 0,
+                                        "isBackground": false
+                                    },
+                                    "Parent": "0",
+                                    "Visible": true
+                                }
                             }
                         }
                     }
@@ -665,7 +700,7 @@
                                 },
                                 "Image Height Count": 1,
                                 "Style": "Default",
-                                "Text": "▲",
+                                "Text": "Up",
                                 "Window": {
                                     "BgColor": "White",
                                     "Color": "Black",
@@ -700,7 +735,7 @@
                                 },
                                 "Image Height Count": 1,
                                 "Style": "Default",
-                                "Text": "▼",
+                                "Text": "Dwn",
                                 "Window": {
                                     "BgColor": "White",
                                     "Color": "Black",
@@ -735,7 +770,7 @@
                                 },
                                 "Image Height Count": 1,
                                 "Style": "Default",
-                                "Text": "▲",
+                                "Text": "Up",
                                 "Window": {
                                     "BgColor": "White",
                                     "Color": "Black",
@@ -770,7 +805,7 @@
                                 },
                                 "Image Height Count": 1,
                                 "Style": "Default",
-                                "Text": "▼",
+                                "Text": "Dwn",
                                 "Window": {
                                     "BgColor": "White",
                                     "Color": "Black",
@@ -813,7 +848,7 @@
                                     "BgColor": "White",
                                     "Color": "Black",
                                     "Font": "DejaVu Sans 32",
-                                    "GHandle": "ghLabel5",
+                                    "GHandle": "ghBandLabel",
                                     "Item": {
                                         "Height": 40,
                                         "Lock Position": false,
@@ -846,12 +881,12 @@
                                 },
                                 "Image Height Count": 1,
                                 "Style": "Default",
-                                "Text": "0",
+                                "Text": "1",
                                 "Window": {
                                     "BgColor": "White",
                                     "Color": "Black",
                                     "Font": "DejaVu Sans 32",
-                                    "GHandle": "ghLabel5_1",
+                                    "GHandle": "ghChannelLabel",
                                     "Item": {
                                         "Height": 40,
                                         "Lock Position": false,
@@ -886,7 +921,7 @@
                                     "BgColor": "White",
                                     "Color": "Black",
                                     "Font": "0",
-                                    "GHandle": "ghButton1",
+                                    "GHandle": "ghSetFreq",
                                     "Item": {
                                         "Height": 30,
                                         "Lock Position": false,
@@ -894,7 +929,80 @@
                                         "Snap": true,
                                         "Width": 120,
                                         "X": 190,
-                                        "Y": 40,
+                                        "Y": 30,
+                                        "Z": 0,
+                                        "isBackground": false
+                                    },
+                                    "Parent": "0",
+                                    "Visible": true
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "PushButton": {
+                            "Widget": {
+                                "CustomDraw": "gwinButtonDraw_Normal",
+                                "CustomParam": "0",
+                                "Enabled": true,
+                                "Image": {
+                                    "Desktop Path": "Invalid",
+                                    "Need Manual Init": true
+                                },
+                                "Image Height Count": 1,
+                                "Style": "Default",
+                                "Text": "Back",
+                                "Window": {
+                                    "BgColor": "White",
+                                    "Color": "Black",
+                                    "Font": "0",
+                                    "GHandle": "ghBackButton",
+                                    "Item": {
+                                        "Height": 30,
+                                        "Lock Position": false,
+                                        "Lock Size": false,
+                                        "Snap": true,
+                                        "Width": 120,
+                                        "X": 190,
+                                        "Y": 70,
+                                        "Z": 0,
+                                        "isBackground": false
+                                    },
+                                    "Parent": "0",
+                                    "Visible": true
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "Label": {
+                            "Auto Size Height": false,
+                            "Auto Size Width": false,
+                            "Border": false,
+                            "Widget": {
+                                "CustomDraw": "gwinLabelDrawJustifiedLeft",
+                                "CustomParam": "0",
+                                "Enabled": true,
+                                "Image": {
+                                    "Desktop Path": "Invalid",
+                                    "Need Manual Init": true
+                                },
+                                "Image Height Count": 1,
+                                "Style": "Default",
+                                "Text": "5800",
+                                "Window": {
+                                    "BgColor": "White",
+                                    "Color": "Black",
+                                    "Font": "0",
+                                    "GHandle": "ghFrequency",
+                                    "Item": {
+                                        "Height": 20,
+                                        "Lock Position": false,
+                                        "Lock Size": false,
+                                        "Snap": true,
+                                        "Width": 50,
+                                        "X": 130,
+                                        "Y": 70,
                                         "Z": 0,
                                         "isBackground": false
                                     },

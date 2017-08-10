@@ -4,6 +4,7 @@
 /* http://ugfx.org                                                            */
 /******************************************************************************/
 
+#include "calibration.h"
 #include "colors.h"
 #include "widgetstyles.h"
 #include "gui.h"
@@ -16,11 +17,22 @@ GHandle ghContainerPage0;
 GHandle ghSetFreqPage;
 GHandle ghStartCalibration;
 GHandle ghStartRace;
-GHandle ghLabel1;
+GHandle ghBestLap;
 GHandle ghLabel2;
-GHandle ghLabel3;
+GHandle ghTimerLabel;
 GHandle ghLabel4;
-GHandle ghConsole1;
+GHandle ghConsole;
+GHandle ghResults;
+GHandle ghContainerPage1;
+GHandle ghUpBand;
+GHandle ghDownBand;
+GHandle ghUpChannel;
+GHandle ghDownChannel;
+GHandle ghBandLabel;
+GHandle ghChannelLabel;
+GHandle ghSetFreq;
+GHandle ghBackButton;
+GHandle ghFrequency;
 
 // Fonts
 font_t dejavu_sans_16;
@@ -84,7 +96,7 @@ static void createPagePage0(void)
 	wi.customStyle = 0;
 	ghStartRace = gwinButtonCreate(0, &wi);
 
-	// Create label widget: ghLabel1
+	// Create label widget: ghBestLap
 	wi.g.show = TRUE;
 	wi.g.x = 120;
 	wi.g.y = 190;
@@ -95,10 +107,10 @@ static void createPagePage0(void)
 	wi.customDraw = gwinLabelDrawJustifiedLeft;
 	wi.customParam = 0;
 	wi.customStyle = 0;
-	ghLabel1 = gwinLabelCreate(0, &wi);
-	gwinLabelSetBorder(ghLabel1, FALSE);
-	gwinSetFont(ghLabel1, dejavu_sans_32);
-	gwinRedraw(ghLabel1);
+	ghBestLap = gwinLabelCreate(0, &wi);
+	gwinLabelSetBorder(ghBestLap, FALSE);
+	gwinSetFont(ghBestLap, dejavu_sans_32);
+	gwinRedraw(ghBestLap);
 
 	// Create label widget: ghLabel2
 	wi.g.show = TRUE;
@@ -114,7 +126,7 @@ static void createPagePage0(void)
 	ghLabel2 = gwinLabelCreate(0, &wi);
 	gwinLabelSetBorder(ghLabel2, FALSE);
 
-	// Create label widget: ghLabel3
+	// Create label widget: ghTimerLabel
 	wi.g.show = TRUE;
 	wi.g.x = 10;
 	wi.g.y = 190;
@@ -125,10 +137,10 @@ static void createPagePage0(void)
 	wi.customDraw = gwinLabelDrawJustifiedLeft;
 	wi.customParam = 0;
 	wi.customStyle = 0;
-	ghLabel3 = gwinLabelCreate(0, &wi);
-	gwinLabelSetBorder(ghLabel3, FALSE);
-	gwinSetFont(ghLabel3, dejavu_sans_32);
-	gwinRedraw(ghLabel3);
+	ghTimerLabel = gwinLabelCreate(0, &wi);
+	gwinLabelSetBorder(ghTimerLabel, FALSE);
+	gwinSetFont(ghTimerLabel, dejavu_sans_32);
+	gwinRedraw(ghTimerLabel);
 
 	// Create label widget: ghLabel4
 	wi.g.show = TRUE;
@@ -144,27 +156,189 @@ static void createPagePage0(void)
 	ghLabel4 = gwinLabelCreate(0, &wi);
 	gwinLabelSetBorder(ghLabel4, FALSE);
 
-	// Create console widget: ghConsole1
+	// Create console widget: ghConsole
 	wi.g.show = TRUE;
 	wi.g.x = 10;
 	wi.g.y = 10;
 	wi.g.width = 170;
 	wi.g.height = 150;
 	wi.g.parent = ghContainerPage0;
-	ghConsole1 = gwinConsoleCreate(0, &wi.g);
-	gwinSetColor(ghConsole1, black_studio);
-	gwinSetBgColor(ghConsole1, silver_studio);
+	ghConsole = gwinConsoleCreate(0, &wi.g);
+	gwinSetColor(ghConsole, black_studio);
+	gwinSetBgColor(ghConsole, silver_studio);
+
+	// create button widget: ghResults
+	wi.g.show = TRUE;
+	wi.g.x = 190;
+	wi.g.y = 130;
+	wi.g.width = 120;
+	wi.g.height = 30;
+	wi.g.parent = ghContainerPage0;
+	wi.text = "Results";
+	wi.customDraw = gwinButtonDraw_Normal;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghResults = gwinButtonCreate(0, &wi);
+}
+
+static void createPagePage1(void)
+{
+	GWidgetInit wi;
+	gwinWidgetClearInit(&wi);
+
+
+	// create container widget: ghContainerPage1
+	wi.g.show = FALSE;
+	wi.g.x = 0;
+	wi.g.y = 0;
+	wi.g.width = 320;
+	wi.g.height = 240;
+	wi.g.parent = 0;
+	wi.text = "Container";
+	wi.customDraw = 0;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghContainerPage1 = gwinContainerCreate(0, &wi, 0);
+
+	// create button widget: ghUpBand
+	wi.g.show = TRUE;
+	wi.g.x = 30;
+	wi.g.y = 100;
+	wi.g.width = 40;
+	wi.g.height = 30;
+	wi.g.parent = ghContainerPage1;
+	wi.text = "▲";
+	wi.customDraw = gwinButtonDraw_Normal;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghUpBand = gwinButtonCreate(0, &wi);
+
+	// create button widget: ghDownBand
+	wi.g.show = TRUE;
+	wi.g.x = 30;
+	wi.g.y = 140;
+	wi.g.width = 40;
+	wi.g.height = 30;
+	wi.g.parent = ghContainerPage1;
+	wi.text = "▼";
+	wi.customDraw = gwinButtonDraw_Normal;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghDownBand = gwinButtonCreate(0, &wi);
+
+	// create button widget: ghUpChannel
+	wi.g.show = TRUE;
+	wi.g.x = 80;
+	wi.g.y = 100;
+	wi.g.width = 40;
+	wi.g.height = 30;
+	wi.g.parent = ghContainerPage1;
+	wi.text = "▲";
+	wi.customDraw = gwinButtonDraw_Normal;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghUpChannel = gwinButtonCreate(0, &wi);
+
+	// create button widget: ghDownChannel
+	wi.g.show = TRUE;
+	wi.g.x = 80;
+	wi.g.y = 140;
+	wi.g.width = 40;
+	wi.g.height = 30;
+	wi.g.parent = ghContainerPage1;
+	wi.text = "▼";
+	wi.customDraw = gwinButtonDraw_Normal;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghDownChannel = gwinButtonCreate(0, &wi);
+
+	// Create label widget: ghBandLabel
+	wi.g.show = TRUE;
+	wi.g.x = 30;
+	wi.g.y = 60;
+	wi.g.width = 40;
+	wi.g.height = 40;
+	wi.g.parent = ghContainerPage1;
+	wi.text = "A";
+	wi.customDraw = gwinLabelDrawJustifiedCenter;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghBandLabel = gwinLabelCreate(0, &wi);
+	gwinLabelSetBorder(ghBandLabel, FALSE);
+	gwinSetFont(ghBandLabel, dejavu_sans_32);
+	gwinRedraw(ghBandLabel);
+
+	// Create label widget: ghChannelLabel
+	wi.g.show = TRUE;
+	wi.g.x = 80;
+	wi.g.y = 60;
+	wi.g.width = 40;
+	wi.g.height = 40;
+	wi.g.parent = ghContainerPage1;
+	wi.text = "1";
+	wi.customDraw = gwinLabelDrawJustifiedCenter;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghChannelLabel = gwinLabelCreate(0, &wi);
+	gwinLabelSetBorder(ghChannelLabel, FALSE);
+	gwinSetFont(ghChannelLabel, dejavu_sans_32);
+	gwinRedraw(ghChannelLabel);
+
+	// create button widget: ghSetFreq
+	wi.g.show = TRUE;
+	wi.g.x = 190;
+	wi.g.y = 30;
+	wi.g.width = 120;
+	wi.g.height = 30;
+	wi.g.parent = ghContainerPage1;
+	wi.text = "Set freq";
+	wi.customDraw = gwinButtonDraw_Normal;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghSetFreq = gwinButtonCreate(0, &wi);
+
+	// create button widget: ghBackButton
+	wi.g.show = TRUE;
+	wi.g.x = 190;
+	wi.g.y = 70;
+	wi.g.width = 120;
+	wi.g.height = 30;
+	wi.g.parent = ghContainerPage1;
+	wi.text = "Back";
+	wi.customDraw = gwinButtonDraw_Normal;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghBackButton = gwinButtonCreate(0, &wi);
+
+	// Create label widget: ghFrequency
+	wi.g.show = TRUE;
+	wi.g.x = 130;
+	wi.g.y = 70;
+	wi.g.width = 50;
+	wi.g.height = 20;
+	wi.g.parent = ghContainerPage1;
+	wi.text = "5800";
+	wi.customDraw = gwinLabelDrawJustifiedLeft;
+	wi.customParam = 0;
+	wi.customStyle = 0;
+	ghFrequency = gwinLabelCreate(0, &wi);
+	gwinLabelSetBorder(ghFrequency, FALSE);
 }
 
 void guiShowPage(unsigned pageIndex)
 {
 	// Hide all pages
 	gwinHide(ghContainerPage0);
+	gwinHide(ghContainerPage1);
 
 	// Show page selected page
 	switch (pageIndex) {
 	case 0:
 		gwinShow(ghContainerPage0);
+		break;
+
+	case 1:
+		gwinShow(ghContainerPage1);
 		break;
 
 	default:
@@ -191,12 +365,13 @@ void guiCreate(void)
 
 	// Create all the display pages
 	createPagePage0();
+	createPagePage1();
 
 	// Select the default display page
 	guiShowPage(0);
 
 	// Console sample text
-	gwinPrintf(ghConsole1, "Welcome to MRaceTimer");
+	gwinPrintf(ghConsole, "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet");
 }
 
 void guiEventLoop(void)

@@ -3,10 +3,9 @@
 #include "chprintf.h"
 #include "shellcfg.h"
 
-#include "rtc6715.h"
-
 #include "gfx.h"
-#include "gui.h"
+#include "rtc6715.h"
+#include "gui_thread.h"
 
 /*
  * Blinker thread.
@@ -64,8 +63,6 @@ float measure_rssi(void) {
  * Application entry point.
  */
 int main(void) {
-    GHandle     gh;
-    uint16_t    i;
 
     thread_t *shelltp = NULL;
 
@@ -85,8 +82,7 @@ int main(void) {
 
     gfxInit();
     gdispSetOrientation(GDISP_ROTATE_270);
-    guiCreate();
-
+    gui_manager_init();
     //guiEventLoop();
     uint8_t cnt = 0;
 
@@ -104,7 +100,7 @@ int main(void) {
         }
         if(++cnt == 10) {
             cnt = 0;
-            gwinPrintf(ghConsole1, "RSSI: %u\n", voltage);
+            //gwinPrintf(ghConsole1, "RSSI: %u\n", voltage);
         }
         chThdSleepMilliseconds(50);
     }

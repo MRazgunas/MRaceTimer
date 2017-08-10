@@ -1,6 +1,7 @@
 build/*
 .dep/*
 .settings/*
+ugfx_studio/output/*
 
 #Eclipse project files
 .cproject

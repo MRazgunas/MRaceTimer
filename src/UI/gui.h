@@ -20,11 +20,22 @@ extern GHandle ghContainerPage0;
 extern GHandle ghSetFreqPage;
 extern GHandle ghStartCalibration;
 extern GHandle ghStartRace;
-extern GHandle ghLabel1;
+extern GHandle ghBestLap;
 extern GHandle ghLabel2;
-extern GHandle ghLabel3;
+extern GHandle ghTimerLabel;
 extern GHandle ghLabel4;
-extern GHandle ghConsole1;
+extern GHandle ghConsole;
+extern GHandle ghResults;
+extern GHandle ghContainerPage1;
+extern GHandle ghUpBand;
+extern GHandle ghDownBand;
+extern GHandle ghUpChannel;
+extern GHandle ghDownChannel;
+extern GHandle ghBandLabel;
+extern GHandle ghChannelLabel;
+extern GHandle ghSetFreq;
+extern GHandle ghBackButton;
+extern GHandle ghFrequency;
 
 // Function Prototypes
 void guiCreate(void);
