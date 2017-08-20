@@ -12,12 +12,17 @@ void spiUnselectMod(uint8_t rxNumber);
 
 void initRTC6715() {
     palSetPad(GPIOB, GPIOB_SD_CS);
-    palClearPad(GPIOB, GPIOB_SPI2_MOSI);
+    //palClearPad(GPIOB, GPIOB_SPI2_MOSI);
 }
 
 void setFrequency(int freq) {
     uint32_t regB;
     regB = calculateRegBData(freq);
+
+    spiAcquireBus(&SPID2);
+
+    palSetPadMode(GPIOB, GPIOB_SPI2_SCK, PAL_MODE_OUTPUT_PUSHPULL);
+    palSetPadMode(GPIOB, GPIOB_SPI2_MOSI, PAL_MODE_OUTPUT_PUSHPULL);
 
     spiSelectMod(0);
 
@@ -41,6 +46,11 @@ void setFrequency(int freq) {
     spiWrite0();
 
     spiUnselectMod(0);
+
+    palSetPadMode(GPIOB, GPIOB_SPI2_SCK, PAL_MODE_STM32_ALTERNATE_PUSHPULL);
+    palSetPadMode(GPIOB, GPIOB_SPI2_MOSI, PAL_MODE_STM32_ALTERNATE_PUSHPULL);
+
+    spiReleaseBus(&SPID2);
 
 /*    spiAcquireBus(&SPID2);
     spiSelect(&SPID2);

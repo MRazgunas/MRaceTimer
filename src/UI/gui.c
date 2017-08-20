@@ -207,7 +207,7 @@ static void createPagePage1(void)
 	wi.g.width = 40;
 	wi.g.height = 30;
 	wi.g.parent = ghContainerPage1;
-	wi.text = "▲";
+	wi.text = "Up";
 	wi.customDraw = gwinButtonDraw_Normal;
 	wi.customParam = 0;
 	wi.customStyle = 0;
@@ -220,7 +220,7 @@ static void createPagePage1(void)
 	wi.g.width = 40;
 	wi.g.height = 30;
 	wi.g.parent = ghContainerPage1;
-	wi.text = "▼";
+	wi.text = "Dwn";
 	wi.customDraw = gwinButtonDraw_Normal;
 	wi.customParam = 0;
 	wi.customStyle = 0;
@@ -233,7 +233,7 @@ static void createPagePage1(void)
 	wi.g.width = 40;
 	wi.g.height = 30;
 	wi.g.parent = ghContainerPage1;
-	wi.text = "▲";
+	wi.text = "Up";
 	wi.customDraw = gwinButtonDraw_Normal;
 	wi.customParam = 0;
 	wi.customStyle = 0;
@@ -246,7 +246,7 @@ static void createPagePage1(void)
 	wi.g.width = 40;
 	wi.g.height = 30;
 	wi.g.parent = ghContainerPage1;
-	wi.text = "▼";
+	wi.text = "Dwn";
 	wi.customDraw = gwinButtonDraw_Normal;
 	wi.customParam = 0;
 	wi.customStyle = 0;

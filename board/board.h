@@ -102,7 +102,7 @@
  * PB15 - Push Pull output                      (SPI2_MOSI).
  */
 #define VAL_GPIOBCRL            0x4B888833      /*  PB7...PB0 */
-#define VAL_GPIOBCRH            0xB8B3B888      /* PB15...PB8 */
+#define VAL_GPIOBCRH            0xB8B33888      /* PB15...PB8 */
 //#define VAL_GPIOBCRH            0x38338888      /* PB15...PB8 */
 #define VAL_GPIOBODR            0xFFFFFFFF
 

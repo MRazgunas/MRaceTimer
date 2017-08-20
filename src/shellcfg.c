@@ -25,6 +25,7 @@
 #include "chprintf.h"
 
 #include "rtc6715.h"
+#include "laps.h"
 
 char * endptr;
 bool rssi_en = false;
@@ -74,9 +75,33 @@ static void cmd_enrssi(BaseSequentialStream *chp, int argc, char *argv[]) {
 
 }
 
+static void cmd_getlaps(BaseSequentialStream *chp, int argc, char *argv[]) {
+    (void) argv;
+    if(argc > 0) {
+        chprintf(chp, "Usage: getlaps\r\n");
+    }
+    if(current_lap == 0) {
+        chprintf(chp, "Currently calibrating\r\n");
+        return;
+    } else if(current_lap == 1) {
+        chprintf(chp, "No laps recorded\r\n");
+        return;
+    }
+    for(int i = 1; i < current_lap; i++) {
+        chprintf(chp, "Lap: %u\r\n" , i);
+        uint32_t min = lap_time[i].lap_time / 60000;
+        uint32_t sec = (lap_time[i].lap_time / 1000) % 60;
+        uint32_t ms = lap_time[i].lap_time % 60000;
+        chprintf(chp, "Lap time: %um:%us:%ums\r\n", min, sec, ms);
+        chprintf(chp, "======================================\r\n");
+    }
+
+}
+
 static const ShellCommand commands[] = {
   {"setfreq", cmd_setfreq},
   {"enrssi", cmd_enrssi},
+  {"getlaps", cmd_getlaps},
   {NULL, NULL}
 };
 

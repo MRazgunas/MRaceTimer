@@ -50,10 +50,13 @@ static GFXINLINE bool_t getpin_pressed(GMouse* m) {
 
 static GFXINLINE void aquire_bus(GMouse* m) {
     (void) m;
+    spiAcquireBus(&SPID2);
+    spiStart(&SPID2, &hs_spicfg);
 }
 
 static GFXINLINE void release_bus(GMouse* m) {
     (void) m;
+    spiReleaseBus(&SPID2);
 }
 
 static GFXINLINE uint16_t read_value(GMouse* m, uint16_t port) {

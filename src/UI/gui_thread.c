@@ -1,12 +1,18 @@
 #include "ch.h"
 #include "hal.h"
 
+#include "gui_thread.h"
+
 #include "gfx.h"
 #include "gui.h"
 
+#include "rtc6715.h"
 #include "frequencies.h"
 
 void update_frequency_labels(uint8_t band, uint8_t channel, uint16_t frequency);
+
+vrx_status *status;
+vrx_settings *settings;
 
 char* itoa(int i, char b[]){
     char const digit[] = "0123456789";
@@ -58,7 +64,7 @@ static THD_FUNCTION(GuiThread, arg) {
             } else if(((GEventGWinButton*)pe)->gwin == ghBackButton) {
                 guiShowPage(0);
             } else if(((GEventGWinButton*)pe)->gwin == ghSetFreq) {
-
+                setFrequency(frequency_sel);
             } else if(((GEventGWinButton*)pe)->gwin == ghUpBand) {
                 if(band_sel++ == NUM_BANDS-1) {
                     band_sel = 0;
@@ -83,6 +89,8 @@ static THD_FUNCTION(GuiThread, arg) {
                 }
                 frequency_sel = bandMap[band_sel][channel_sel];
                 update_frequency_labels(band_sel, channel_sel, frequency_sel);
+            } else if(((GEventGWinButton*)pe)->gwin == ghStartRace) {
+                status->rssiTrigger = status->rssi - settings->calibrationOffset;
             }
         }
         chThdSleepMilliseconds(5);
@@ -100,7 +108,9 @@ void update_frequency_labels(uint8_t band, uint8_t channel, uint16_t frequency) 
     gwinSetText(ghFrequency, frequency_text, true);
 }
 
-void gui_manager_init(void) {
+void gui_manager_init(vrx_status *stat, vrx_settings *sett) {
+    status = stat;
+    settings = sett;
     chThdCreateStatic(waGuiThread, sizeof(waGuiThread), NORMALPRIO, GuiThread, NULL);
 }
 
