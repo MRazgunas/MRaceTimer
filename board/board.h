@@ -52,6 +52,11 @@
 #define GPIOC_LED1              1
 #define GPIOC_LCD_CS            5
 #define GPIOC_TOUCH_IRQ         6
+
+#define EEPROM_ADDRESS  0x50
+#define EEPROM_SIZE     4096 //bytes
+#define EEPROM_PAGE_SIZE 32 //bytes
+#define EEPROM_BUS      I2CD1
 /*
  * I/O ports initial setup, this configuration is established soon after reset
  * in the initialization code.
@@ -95,6 +100,8 @@
  * PB1  - Push Pull output 50MHz.               (LCD_DC).
  * PB6  - Alternate Open Drain output           (UART1_TX).
  * PB7  - Digital input with pull up            (UART1_RX).
+ * PB8  - Alternate Open Drain output           (SCL_1).
+ * PB9  - Alternate Open Drain output           (SDA_1).
  * PB11 - Push Pull output 50MHz.               (TOUCH_CS).
  * PB12 - Push Pull output                      (SD_CS).
  * PB13 - Push Pull output                      (SPI2_SCK).
@@ -102,7 +109,7 @@
  * PB15 - Push Pull output                      (SPI2_MOSI).
  */
 #define VAL_GPIOBCRL            0x4B888833      /*  PB7...PB0 */
-#define VAL_GPIOBCRH            0xB8B33888      /* PB15...PB8 */
+#define VAL_GPIOBCRH            0xB8B338FF      /* PB15...PB8 */
 //#define VAL_GPIOBCRH            0x38338888      /* PB15...PB8 */
 #define VAL_GPIOBODR            0xFFFFFFFF
 

@@ -3,6 +3,9 @@
 #include "chprintf.h"
 #include "shellcfg.h"
 
+#include "eeprom.h"
+#include "telemetry.h"
+#include "parameters_d.h"
 #include "gfx.h"
 #include "rtc6715.h"
 #include "gui.h"
@@ -81,12 +84,18 @@ int main(void) {
     halInit();
     chSysInit();
 
-    //sdStart(&SD2, NULL);
+    sdStart(&SD1, NULL);
+    adcStart(&ADCD1, NULL);
+    init_eeprom();
+
     initRTC6715();
     shellInit();
 
-    sdStart(&SD1, NULL);
-    adcStart(&ADCD1, NULL);
+    load_parameters();
+
+    init_telemetry();
+
+
 
     chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO+1, Thread1, NULL);
 
@@ -101,7 +110,7 @@ int main(void) {
     chThdSetPriority(NORMALPRIO+5);
 
     while (true) {
-        if(SD1.state == SD_READY && shelltp == NULL ) {
+        if(SD1.state == SD_READY && shelltp == NULL && in_cli_mode) {
             shelltp = chThdCreateFromHeap(NULL, SHELL_WA_SIZE,
                                                          "shell", NORMALPRIO + 1,
                                                          shellThread, (void *)&shell_cfg);

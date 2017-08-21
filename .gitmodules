@@ -4,3 +4,6 @@
 [submodule "modules/ugfx"]
 	path = modules/ugfx
 	url = https://git.ugfx.io/ugfx/ugfx.git
+[submodule "modules/Racelink"]
+	path = modules/Racelink
+	url = https://github.com/MRazgunas/Racelink.git

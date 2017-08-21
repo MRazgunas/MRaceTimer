@@ -88,6 +88,22 @@ PROJECT = MRaceTimer
 # Imported source files and paths
 CHIBIOS = modules/ChibiOS
 GFXLIB = modules/ugfx
+
+# mavlink header generation
+RACELINK_SUBDIR = v1.0
+RACELINK_WIRE_PROTOCOL = 1.0
+RACELINK_DIR = modules/Racelink
+MESSAGE_DEFINITIONS = modules/Racelink/message_definitions/v1.0
+# MAVLINK_HEADERS = 
+RACELINK_OUTPUT_DIR = build/modules/Racelink/$(MAVLINK_SUBDIR)
+
+#@echo Generating MAVLink headers...
+#goto mavlink module directory and run the most recent generator script
+#@echo "Generating C code using mavgen.py located at" /modules/mavlink/
+$(info $(shell py $(RACELINK_DIR)/pymavlink/tools/mavgen.py --lang=C --wire-protocol=$(RACELINK_WIRE_PROTOCOL) --output=$(RACELINK_OUTPUT_DIR) $(MESSAGE_DEFINITIONS)/common.xml))
+
+
+
 # Startup files.
 include $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32f1xx.mk
 # HAL-OSAL files (optional).
@@ -158,7 +174,8 @@ INCDIR = $(CHIBIOS)/os/license \
          $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) \
          $(HALINC) $(PLATFORMINC) $(BOARDINC) $(TESTINC) \
          $(CHIBIOS)/os/various  $(CHIBIOS)/os/hal/lib/streams \
-         $(SHELLINC) $(GFXINC) src src/UI
+         $(SHELLINC) $(GFXINC) src src/UI \
+         $(RACELINK_OUTPUT_DIR)/common
 
 #
 # Project, sources and paths
