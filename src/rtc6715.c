@@ -9,6 +9,33 @@ void spiWrite1(void);
 void spiSelectMod(uint8_t rxNumber);
 void spiUnselectMod(uint8_t rxNumber);
 
+/*
+ * ADC conversion group.
+ * Mode:        Linear buffer, 8 samples of 1 channel, SW triggered.
+ * Channels:    IN0.
+ */
+static const ADCConversionGroup adcVoltage = {
+FALSE,
+1,
+NULL,
+NULL,//adcerrorcallback,
+0, 0, /* CR1, CR2 */
+0, /* SMPR1 */
+ADC_SMPR2_SMP_AN0(ADC_SAMPLE_41P5), /* SMPR2 */
+ADC_SQR1_NUM_CH(1), /* SQR1 */
+0, /* SQR2 */
+ADC_SQR3_SQ1_N(ADC_CHANNEL_IN0)  /* SQR3 */
+};
+
+adcsample_t measure_rssi(void) {
+    adcsample_t sample;
+
+    adcConvert(&ADCD1, &adcVoltage, &sample, 1);
+
+    return sample;
+}
+
+
 
 void initRTC6715() {
     palSetPad(GPIOB, GPIOB_SD_CS);

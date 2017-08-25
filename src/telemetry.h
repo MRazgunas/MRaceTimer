@@ -29,6 +29,9 @@ void init_telemetry(void);
 void send_parameter_value_all(const char *param_name, ap_var_type param_type,
         float param_value);
 
+void send_racer_pass_status(uint8_t lap_number);
+void send_racer_lap_time(uint8_t lap_number);
+
 extern bool in_cli_mode;
 
 #endif /* SRC_TELEMETRY_H_ */

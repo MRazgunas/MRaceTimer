@@ -25,7 +25,7 @@
 #include "chprintf.h"
 
 #include "rtc6715.h"
-#include "laps.h"
+#include "race.h"
 
 char * endptr;
 bool rssi_en = false;

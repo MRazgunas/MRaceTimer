@@ -5,7 +5,7 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O0 -ggdb -fomit-frame-pointer -falign-functions=16
+  USE_OPT = -O1 -ggdb -fomit-frame-pointer -falign-functions=16
 endif
 
 # C specific options here (added to USE_OPT).
@@ -137,7 +137,8 @@ CSRC = $(STARTUPSRC) \
        $(TESTSRC) \
        $(CHIBIOS)/os/hal/lib/streams/chprintf.c \
        $(SHELLSRC) \
-       $(GFXSRC)
+       $(GFXSRC) \
+       $(CHIBIOS)/os/various/syscalls.c
        
 CSRC += $(wildcard src/*.c)
 CSRC += $(wildcard src/*/*.c)
@@ -237,7 +238,7 @@ UINCDIR =
 ULIBDIR =
 
 # List all user libraries here
-ULIBS =
+ULIBS = -lm
 
 #
 # End of user defines

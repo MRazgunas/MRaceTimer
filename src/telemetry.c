@@ -9,6 +9,9 @@
 #include "chprintf.h"
 #include "parameters.h"
 #include "parameters_d.h"
+#include "race.h"
+#include "rtc6715.h"
+#include "gui_thread.h"
 
 #define SERIAL_DEVICE SD1
 
@@ -28,6 +31,10 @@ uint8_t system_state = VTS_STATE_BOOT; ///< Booting up
 
 // number of 50Hz ticks until we next send this stream
 uint8_t stream_ticks[NUM_STREAMS];
+
+bool send_race_pass_now = false;
+bool send_race_lap_now = false;
+uint8_t lap_to_send = 0;
 
 void handle_mavlink_message(mavlink_message_t msg);
 void handle_param_request_list(mavlink_message_t *msg);
@@ -104,6 +111,16 @@ static THD_FUNCTION(MavlinkTx, arg) {
 	}
 }
 
+void send_racer_pass_status(uint8_t lap_number) {
+    send_race_pass_now = true;
+    lap_to_send = lap_number;
+}
+
+void send_racer_lap_time(uint8_t lap_number) {
+    send_race_lap_now = true;
+    lap_to_send = lap_number;
+}
+
 void handle_mavlink_message(mavlink_message_t msg) {
 	switch (msg.msgid) {
 		case MAVLINK_MSG_ID_HEARTBEAT: {
@@ -137,6 +154,18 @@ void handle_mavlink_message(mavlink_message_t msg) {
             mavlink_command_long_t pack;
             mavlink_msg_command_long_decode(&msg, &pack);
             switch (pack.command) {
+            case VTS_CMD_START_RACE_COUNTDOWN:
+                if(pack.param1 == -1.0f) {
+                    stop_race();
+                } else if(pack.param1 > 0){
+                    set_start_time_and_start_count(pack.param1);
+                    race_start_requested = true;
+                    race_started = false;
+                }
+                break;
+            case VTS_CMD_SET_FREQUENCY:
+                setFrequency((int)pack.param1);
+                break;
             }
             mavlink_msg_command_ack_send(MAVLINK_COMM_0, pack.command,
                                    VTS_RESULT_ACCEPTED);
@@ -290,6 +319,17 @@ void data_stream_send(void) {
     }
 
     if (stream_trigger(STREAM_SENSORS)) {
+    }
+
+    if(send_race_pass_now) {
+        mavlink_msg_racer_pass_send(MAVLINK_COMM_0, lap_time[lap_to_send].pass_time, 0, lap_time[lap_to_send].rssi);
+        send_race_pass_now = false;
+    }
+
+    if(send_race_lap_now) {
+        mavlink_msg_racer_lap_send(MAVLINK_COMM_0, lap_time[lap_to_send].pass_time, lap_time[lap_to_send].lap_time,
+                lap_time[lap_to_send].lap, 0);
+        send_race_lap_now = false;
     }
 }
 
