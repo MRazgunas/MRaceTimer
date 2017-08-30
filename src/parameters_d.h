@@ -19,6 +19,10 @@ enum {
     k_param_format_version = 0,
     k_param_stream_param,
     k_param_stream_sensors,
+    k_param_vtx0_calibration_threshold,
+    k_param_vtx0_calibartion_offser,
+    k_param_vtx0_trigger_threshold,
+    k_param_vtx0_filter_ration,
 };
 
 extern int16_t stream_rates[NUM_STREAMS];

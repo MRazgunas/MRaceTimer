@@ -39,7 +39,7 @@ const vrx_status vrx_status_defaults = {
 
 void init_race(void) {
     race_status = vrx_status_defaults;
-    race_settings = vrx_set_defaults;
+    //race_settings = vrx_set_defaults;
 }
 
 void update_race(void) {

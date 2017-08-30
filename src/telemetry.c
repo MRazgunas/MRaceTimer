@@ -319,6 +319,7 @@ void data_stream_send(void) {
     }
 
     if (stream_trigger(STREAM_SENSORS)) {
+        mavlink_msg_vrx_status_send(MAVLINK_COMM_0, 0, 5800, race_status.rawRssi, race_status.rssi);
     }
 
     if(send_race_pass_now) {
@@ -364,7 +365,7 @@ void init_telemetry() {
 
 	chThdCreateStatic(waMavlinkThread, sizeof(waMavlinkThread), NORMALPRIO,
 			MavlinkThread, NULL);
-	chThdCreateStatic(waMavlinkTx, sizeof(waMavlinkTx), NORMALPRIO,
+	chThdCreateStatic(waMavlinkTx, sizeof(waMavlinkTx), NORMALPRIO+1,
 	            MavlinkTx, NULL);
 }
 

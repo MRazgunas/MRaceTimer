@@ -4,6 +4,7 @@
 #include "parameters_d.h"
 #include "parameters.h"
 #include "telemetry.h"
+#include "race.h"
 
 #define GSCALAR(t, v, name, def) { t, name, k_param_ ## v, &v, def , 0}
 #define GSCALARA(t, v, arr, name, def) { t, name, k_param_ ## v, &arr, def , 0} //for array type
@@ -29,6 +30,14 @@ const struct Info var_info[] = {
          // @Description: This is frequency of sensor stream
          // @User: Advanced
          GSCALARA(AP_PARAM_INT16, stream_sensors, stream_rates[STREAM_SENSORS], "SR_SENSOR", 10),
+
+         GSCALARA(AP_PARAM_INT16, vtx0_calibration_threshold, race_settings.calibrationThreshold, "VTX0_CAL_THRESH", 200),
+
+         GSCALARA(AP_PARAM_INT16, vtx0_calibartion_offser, race_settings.calibrationOffset, "VTX0_CAL_OFFSET", 80),
+
+         GSCALARA(AP_PARAM_INT16, vtx0_trigger_threshold, race_settings.triggerThreshold, "VTX0_TRIG_THRESH", 100),
+
+         GSCALARA(AP_PARAM_FLOAT, vtx0_filter_ration, race_settings.filterRatio, "VTX0_FILT_RATIO", 0.1f),
 
         AP_VAREND,
 };
